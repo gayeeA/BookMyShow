@@ -1,9 +1,12 @@
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from .utils import recommend_movies
+import users
 from .forms import UserRegisterForm, UserUpdateForm
 from django.shortcuts import render,redirect
 from django.contrib.auth import login,authenticate
 from django.contrib.auth.decorators import login_required
 from movies.models import Movie , Booking
+from django.core.mail import send_mail
 
 def home(request):
     movies= Movie.objects.all()
@@ -56,3 +59,18 @@ def reset_password(request):
     else:
         form=PasswordChangeForm(user=request.user)
     return render(request,'users/reset_password.html',{'form':form})
+
+def book_ticket(request):
+    # Logic to book ticket
+    send_mail(
+        'Booking Confirmation',
+        'Your booking has been confirmed. Details: ...',
+        'your-email@gmail.com',
+        [users.email],
+        fail_silently=False,
+    )
+    return render(request, 'booking/success.html')
+
+def recommendations(request):
+    movies = recommend_movies(request.user)
+    return render(request, 'movies/recommendations.html', {'movies': movies})

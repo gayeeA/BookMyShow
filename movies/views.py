@@ -1,3 +1,4 @@
+from ntpath import join
 from django.shortcuts import render, redirect ,get_object_or_404
 from .models import Movie,Theater,Seat,Booking
 from django.contrib.auth.decorators import login_required
@@ -45,10 +46,13 @@ def book_seats(request,theater_id):
                 error_seats.append(seat.seat_number)
         if error_seats:
             error_message=f"The following seats are already booked:{',',join(error_seats)}"
-            return render(request,'movies/seat_selection.html',{'theater':theater,"seats":seats,'error':"No seat selected"})
+            return render(request,'movies/seat_selection.html',{'theater':theaters,"seats":seats,'error':"No seat selected"})
         return redirect('profile')
     return render(request,'movies/seat_selection.html',{'theaters':theaters,"seats":seats})
 
 
+def showtimes(request):
+    movies = Movie.objects.all()
+    return render(request, 'movies/showtimes.html', {'movies': movies})
 
 

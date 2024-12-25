@@ -1,0 +1,13 @@
+<!-- templates/movies/showtimes.html -->
+<table>
+  <tr>
+    <th>Movie</th>
+    <th>Show Timings</th>
+  </tr>
+  {% for movie in movies %}
+  <tr>
+    <td>{{ movie.title }}</td>
+    <td>{{ movie.show_timings|join:", " }}</td>
+  </tr>
+  {% endfor %}
+</table>

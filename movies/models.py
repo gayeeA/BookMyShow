@@ -8,7 +8,7 @@ class Movie(models.Model):
     rating = models.DecimalField(max_digits=3,decimal_places=1)
     cast= models.TextField()
     description= models.TextField(blank=True,null=True) # optional
-
+    show_timings = models.JSONField(default=list) 
     def __str__(self):
         return self.name
 

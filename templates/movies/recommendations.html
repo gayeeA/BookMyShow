@@ -1,0 +1,7 @@
+<!-- templates/movies/recommendations.html -->
+<h2>Recommended for You</h2>
+<ul>
+  {% for movie in movies %}
+  <li>{{ movie.title }}</li>
+  {% endfor %}
+</ul>
