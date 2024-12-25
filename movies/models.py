@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Movie(models.Model):
     name= models.CharField(max_length=255)
     title = models.CharField(max_length=255)
-    image= models.ImageField(upload_to="movies/" ,blank=True, null=True, default="movies/default.png")
+    image= models.ImageField(upload_to="movies/" ,blank=True, null=True, default="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFusGlkNinqf4y11Ibzvi2o6bWMXVM5dHXiA&s")
     rating = models.DecimalField(max_digits=3,decimal_places=1)
     cast= models.TextField()
     description= models.TextField(blank=True,null=True) # optional
