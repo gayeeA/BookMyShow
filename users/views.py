@@ -1,7 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 
 from users.recommendations import get_recommendations
-from .utils import recommend_movies
 import users
 from .forms import UserRegisterForm, UserUpdateForm
 from django.shortcuts import render,redirect
