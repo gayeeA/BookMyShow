@@ -52,7 +52,5 @@ def book_seats(request,theater_id):
 
 
 def showtimes(request):
-    movies = Movie.objects.all()
+    movies = Movie.objects.prefetch_related('showtimes').all()
     return render(request, 'movies/showtimes.html', {'movies': movies})
-
-

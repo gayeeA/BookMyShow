@@ -35,5 +35,11 @@ class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='movies_bookings')
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='movie_bookings')
     booked_at = models.DateTimeField(auto_now_add=True)
+    booking_date = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f'Booking by{self.user.username} for {self.seat.seat_number} at {self.theater.name}'
+
+class Showtime(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='showtimes')
+    date = models.DateField()
+    time = models.TimeField()

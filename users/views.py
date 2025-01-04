@@ -1,4 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+
+from users.recommendations import get_recommendations
 from .utils import recommend_movies
 import users
 from .forms import UserRegisterForm, UserUpdateForm
@@ -71,6 +73,14 @@ def book_ticket(request):
     )
     return render(request, 'booking/success.html')
 
+# def recommendations(request):
+#     movies = recommend_movies(request.user)
+#     return render(request, 'movies/recommendations.html', {'movies': movies})
+
+
 def recommendations(request):
-    movies = recommend_movies(request.user)
-    return render(request, 'movies/recommendations.html', {'movies': movies})
+    if request.user.is_authenticated:
+        recommendations = get_recommendations(request.user)
+    else:
+        recommendations = []
+    return render(request, 'movies/recommendations.html', {'recommendations': recommendations})

@@ -1,12 +1,26 @@
 # users/utils.py
-from collections import Counter
+from django.core.mail import send_mail
+from django.conf import settings
+from django.db.models import Count
 
-from movies.models import Booking, Movie
+from movies.models import Booking
 
-def recommend_movies(user):
-    bookings = Booking.objects.filter(user=user)
-    movie_counts = Counter(booking.movie.title for booking in bookings)
-    most_common = movie_counts.most_common(1)
-    if most_common:
-        return Movie.objects.exclude(title=most_common[0][0])  # Suggest different movies
-    return Movie.objects.all()  # Default to all movies if no history
+def send_ticket_email(user_email, booking_details):
+    subject = "Your Movie Ticket Confirmation"
+    message = f"Thank you for your booking!\n\nDetails:\n{booking_details}"
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = [user_email]
+
+    send_mail(subject, message, from_email, recipient_list)
+
+def get_recommendations(user):
+    # Get movies the user has booked
+    user_movies = Booking.objects.filter(user=user).values_list('movie_id', flat=True)
+
+    # Recommend movies booked by other users who booked similar movies
+    recommendations = Booking.objects.exclude(movie_id__in=user_movies) \
+                                      .values('movie_id', 'movie_title') \
+                                      .annotate(count=Count('movie')) \
+                                      .order_by('-count')[:5]
+
+    return recommendations
